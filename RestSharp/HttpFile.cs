@@ -29,6 +29,11 @@ namespace RestSharp
         public string ContentType { get; set; }
 
         /// <summary>
+        /// Encoding to use for the file
+        /// </summary>
+        public string ContentTransferEncoding { get; set; }
+
+        /// <summary>
         /// Name of the parameter
         /// </summary>
         public string Name { get; set; }

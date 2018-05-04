@@ -151,8 +151,9 @@ namespace RestSharp
         /// <param name="name">The parameter name to use in the request</param>
         /// <param name="path">Full path to file to upload</param>
         /// <param name="contentType">The MIME type of the file to upload</param>
+        /// <param name="contentTransferEncoding">The content transfer encoding for the file to upload</param>
         /// <returns>This request</returns>
-        public IRestRequest AddFile(string name, string path, string contentType = null)
+        public IRestRequest AddFile(string name, string path, string contentType = null, string contentTransferEncoding = null)
         {
             var f = new FileInfo(path);
             var fileLength = f.Length;
@@ -169,7 +170,8 @@ namespace RestSharp
                         file.BaseStream.CopyTo(s);
                     }
                 },
-                ContentType = contentType
+                ContentType = contentType,
+                ContentTransferEncoding = contentTransferEncoding
             });
         }
 
@@ -180,10 +182,11 @@ namespace RestSharp
         /// <param name="bytes">The file data</param>
         /// <param name="fileName">The file name to use for the uploaded file</param>
         /// <param name="contentType">The MIME type of the file to upload</param>
+        /// <param name="contentTransferEncoding">The content transfer encoding for the file to upload</param>
         /// <returns>This request</returns>
-        public IRestRequest AddFile(string name, byte[] bytes, string fileName, string contentType = null)
+        public IRestRequest AddFile(string name, byte[] bytes, string fileName, string contentType = null, string contentTransferEncoding = null)
         {
-            return AddFile(FileParameter.Create(name, bytes, fileName, contentType));
+            return AddFile(FileParameter.Create(name, bytes, fileName, contentType, contentTransferEncoding));
         }
 
         /// <summary>
@@ -194,9 +197,10 @@ namespace RestSharp
         /// <param name="fileName">The file name to use for the uploaded file</param>
         /// <param name="contentLength">The length (in bytes) of the file content.</param>
         /// <param name="contentType">The MIME type of the file to upload</param>
+        /// <param name="contentTransferEncoding">The content transfer encoding for the file to upload</param>
         /// <returns>This request</returns>
         public IRestRequest AddFile(string name, Action<Stream> writer, string fileName, long contentLength,
-            string contentType = null)
+            string contentType = null, string contentTransferEncoding = null)
         {
             return AddFile(new FileParameter
             {
@@ -204,7 +208,8 @@ namespace RestSharp
                 Writer = writer,
                 FileName = fileName,
                 ContentLength = contentLength,
-                ContentType = contentType
+                ContentType = contentType,
+                ContentTransferEncoding = contentTransferEncoding
             });
         }
 
@@ -215,9 +220,10 @@ namespace RestSharp
         /// <param name="bytes">The file data</param>
         /// <param name="filename">The file name to use for the uploaded file</param>
         /// <param name="contentType">Specific content type. Es: application/x-gzip </param>
+        /// <param name="contentTransferEncoding">The content transfer encoding for the file to upload</param>
         /// <returns></returns>
         public IRestRequest AddFileBytes(string name, byte[] bytes, string filename,
-            string contentType = "application/x-gzip")
+            string contentType = "application/x-gzip", string contentTransferEncoding = null)
         {
             long length = bytes.Length;
 
@@ -227,6 +233,7 @@ namespace RestSharp
                 FileName = filename,
                 ContentLength = length,
                 ContentType = contentType,
+                ContentTransferEncoding = contentTransferEncoding,
                 Writer = s =>
                 {
                     using (var file = new StreamReader(new MemoryStream(bytes)))

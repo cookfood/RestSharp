@@ -545,7 +545,8 @@ namespace RestSharp
                     ContentType = file.ContentType,
                     Writer = file.Writer,
                     FileName = file.FileName,
-                    ContentLength = file.ContentLength
+                    ContentLength = file.ContentLength,
+                    ContentTransferEncoding = file.ContentTransferEncoding
                 });
 
             var body = request.Parameters.FirstOrDefault(p => p.Type == ParameterType.RequestBody);
